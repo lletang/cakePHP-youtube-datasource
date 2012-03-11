@@ -4,14 +4,14 @@ CakePHP datasource that retrieves infos regarding a video throught the youtube's
 
 ## Installation
 Put the youtube.php file in your Model/Datasource folder. Add the following
-lines to the database.php file:<br />
-<p>
-public $Youtube = array(
-	'datasource' => 'Youtube',
-	'api_url' => 'https://gdata.youtube.com/feeds/api/videos/',
-	'api_version' => '2'
-);
-</p>
+lines to the database.php file:
+
+	public $Youtube = array(
+		'datasource' => 'Youtube',
+		'api_url' => 'https://gdata.youtube.com/feeds/api/videos/',
+		'api_version' => '2'
+	);
+
 Use the datasource wherever you want, controller, component, model, behaviour
 ecc.. ex:
 <p>
