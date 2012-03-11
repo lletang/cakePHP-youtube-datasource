@@ -14,25 +14,24 @@ lines to the database.php file:
 
 Use the datasource wherever you want, controller, component, model, behaviour
 ecc.. ex:
-<p>
-public function getVideo($id){
-	$this->Youtube = ConnectionManager::getDataSource('Youtube');	
-	$video = $this->Youtube->findById($id);
-	if ($video) {
-		return $video;
-	}else{
-		return false;
+
+	public function getVideo($id){
+		$this->Youtube = ConnectionManager::getDataSource('Youtube');	
+		$video = $this->Youtube->findById($id);
+		if ($video) {
+			return $video;
+		}else{
+			return false;
+		}
 	}
-}
-</p>
+
 usage:
-<p>
-print_r($this->getVideo('http://www.youtube.com/watch?v=PBWhzz_Gn10'));
-</p>
+
+	print_r($this->getVideo('http://www.youtube.com/watch?v=PBWhzz_Gn10'));
 or
-<p>
-print_r($this->getVideo('PBWhzz_Gn10'));
-</p>
+
+	print_r($this->getVideo('PBWhzz_Gn10'));
+
 
 ## Author
 
