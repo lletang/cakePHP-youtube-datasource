@@ -35,12 +35,12 @@ class Youtube extends DataSource{
         }
         $yt_video = $this->config['api_url'].$id.'?v='.$this->config['api_version'];
         $video_feed = $this->Xml->toArray($this->Xml->build($yt_video));
-		if ($video_feed) {
-			return $video_feed;
-		}
-		else {
-			return false;
-		}
+        if ($video_feed) {
+            return $video_feed;
+        }
+        else {
+            return false;
+        }
     }
 
     /**
@@ -85,18 +85,18 @@ class Youtube extends DataSource{
         if(!strpos($subject,"www.youtube.com")){
             $subject = "http://www.youtube.com/watch?v=".$subject;
         }
-		$url = parse_url($subject);
-		if (!isset($url['host'])) {
-			return false;
-		}
-		if ($url['host'] != "www.youtube.com") {
-			return false;
-		}
-		parse_str($url['query'], $query);
-		if (!isset($query['v'])) {
-			return false;
-		}
-		return $query['v'];
-	}
-}
+        $url = parse_url($subject);
+        if (!isset($url['host'])) {
+            return false;
+        }
+        if ($url['host'] != "www.youtube.com") {
+            return false;
+        }
+        parse_str($url['query'], $query);
+        if (!isset($query['v'])) {
+            return false;
+        }
+        return $query['v'];
+            }
+        }
 ?>
