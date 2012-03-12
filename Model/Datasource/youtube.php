@@ -97,6 +97,6 @@ class Youtube extends DataSource{
             return false;
         }
         return $query['v'];
-            }
-        }
+    }
+}
 ?>
