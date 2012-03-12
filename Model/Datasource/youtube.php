@@ -81,7 +81,7 @@ class Youtube extends DataSource{
      * @return mixed - return false if does not work, return the youtube id if 
      * everithing is ok
      */
-	function cleanYoutubeId($subject){
+    function cleanYoutubeId($subject){
         if(!strpos($subject,"www.youtube.com")){
             $subject = "http://www.youtube.com/watch?v=".$subject;
         }
