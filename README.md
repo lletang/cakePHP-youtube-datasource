@@ -17,13 +17,13 @@ findById = get infos for a single video, starting from a complete youtube URL, o
 from a Video ID 
 
 findByNation = find videos for a specific nation. See the comments for a list of
-the availables nations. You can choose which type of video to retrieve, "top
+the available nations. You can choose which type of video to retrieve, "top
 rated" is the default value.
 
 findByCategory = find videos for a specific Category. See the comments for a list of
-the availables categories.
+the available categories.
 
-## Examples Usage
+## Usage Examples
 Use the datasource wherever you want, controller, component, model, behaviour
 
 ### Model
