@@ -1,19 +1,30 @@
 ## CakePHP YouTube datasource
 
-CakePHP datasource that retrieves infos regarding a video throught the youtube's API
+CakePHP YouTube datasource is used to search metatags in the youtube's API
 
 ## Installation
 Put the youtube.php file in your Model/Datasource folder. Add the following
 lines to the database.php file:
 
 	public $Youtube = array(
-		'datasource' => 'Youtube',
-		'api_url' => 'https://gdata.youtube.com/feeds/api/videos/',
-		'api_version' => '2'
+        	'datasource' => 'Youtube',
+        	'api_url' => 'https://gdata.youtube.com/feeds/api/',
+        	'api_version' => '2'
 	);
 
+## Available Functions
+findById = get infos for a single video, startin from a complete youtube URL, or
+from a Video ID 
+findByNation = find video for a specific nation. See the comments for a list of
+the availables nations. You can choose which type of video to retrieve, "top
+rated" is the default value.
+findByCategory = find video for a specific Category. See the comments for a list of
+the availables categories.
+
+## Examples Usage
 Use the datasource wherever you want, controller, component, model, behaviour
-ecc.. ex:
+
+### Model
 
 	public function getVideo($id){
 		$this->Youtube = ConnectionManager::getDataSource('Youtube');	
@@ -31,11 +42,20 @@ usage:
 or
 
 	print_r($this->getVideo('PBWhzz_Gn10'));
+### Controller
+	App::import('Model', 'ConnectionManager');
 
+	public function video() {
+		$this->autoRender = false;
+		$videos = ConnectionManager::getDataSource('Youtube');
+		//print_r($videos->findById('k0FWwh12-tk'));
+		//print_r($videos->findByCategory('Sports'));
+		print_r($videos->findByNation('JP', array('feed_id' => 'top_rated')));
+	}
 
 ## Author
 
-[Edap](http://itora.net/blog)
+[Edap](http:edapx.com)
 
 ## License
 
