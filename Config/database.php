@@ -85,7 +85,7 @@ class DATABASE_CONFIG {
 
     public $Youtube = array(
         'datasource' => 'Youtube',
-        'api_url' => 'https://gdata.youtube.com/feeds/api/videos/',
+        'api_url' => 'https://gdata.youtube.com/feeds/api/',
         'api_version' => '2'
     );
 }
