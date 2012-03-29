@@ -13,12 +13,14 @@ lines to the database.php file:
 	);
 
 ## Available Functions
-findById = get infos for a single video, startin from a complete youtube URL, or
+findById = get infos for a single video, starting from a complete youtube URL, or
 from a Video ID 
-findByNation = find video for a specific nation. See the comments for a list of
+
+findByNation = find videos for a specific nation. See the comments for a list of
 the availables nations. You can choose which type of video to retrieve, "top
 rated" is the default value.
-findByCategory = find video for a specific Category. See the comments for a list of
+
+findByCategory = find videos for a specific Category. See the comments for a list of
 the availables categories.
 
 ## Examples Usage
