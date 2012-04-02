@@ -13,6 +13,8 @@ lines to the database.php file:
 	);
 
 ## Available Functions
+find = open search based on a given term with optional category filter as second parameter
+
 findById = get infos for a single video, starting from a complete youtube URL, or
 from a Video ID 
 
