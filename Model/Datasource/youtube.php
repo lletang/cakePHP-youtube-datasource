@@ -98,9 +98,9 @@ class Youtube extends DataSource{
             return false;
         }
         $video_feed = $this->Xml->toArray($this->Xml->build($video_url));
-		if (!$video_feed) {
-			return false;
-		}
+        if (!$video_feed) {
+            return false;
+        }
         return $video_feed;
     }
 
@@ -122,9 +122,9 @@ class Youtube extends DataSource{
             return false;
         }
         $video_feed = $this->Xml->toArray($this->Xml->build($cat_video));
-		if (!$video_feed) {
-			return false;
-		}
+        if (!$video_feed) {
+            return false;
+        }
 		return $video_feed;
     }
 
@@ -179,9 +179,9 @@ class Youtube extends DataSource{
             return false;
         }
         $video_feed = $this->Xml->toArray($this->Xml->build($nat_video));
-		if (!$video_feed) {
-			return false;
-		}
+        if (!$video_feed) {
+            return false;
+        }
         return $video_feed;
     }
 
