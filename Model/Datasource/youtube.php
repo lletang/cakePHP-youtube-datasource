@@ -30,17 +30,17 @@ App::uses('Xml', 'Utility');
  * @subpackage datasources.models.datasources
  */
 class Youtube extends DataSource{
-	var $description = 'Youtube';
+    var $description = 'Youtube';
     var $video_feed = 'videos/';
     var $nation_feed = 'nations/';
     var $standard_feed = 'standardfeeds/';
 
-	public function __construct($config) {
-		parent::__construct($config);
-		$this->Xml = new Xml();
-	}
+    public function __construct($config) {
+        parent::__construct($config);
+        $this->Xml = new Xml();
+    }
 
-    /**
+/**
      * build the url 
      *
      * @access private
@@ -51,14 +51,10 @@ class Youtube extends DataSource{
     private function __buildUrl($key, $type, $options = null){
         switch ($type) {
         case 'nation';
-            if (!isset($options['feed_id'])) {
-                $feed_id = 'top_rated';
-            } else {
-                $feed_id = $type;
-            }
-            $url = $this->config['api_url'].$this->video_feed;
-            $url.= '?category='.$key.'&v='.$this->config['api_version'];
-        break;
+            $feed = isset($options['feed_id']) ? $options['feed_id'] : 'top_rated';
+            $url = $this->config['api_url'].$this->standard_feed;
+            $url.= $key.'/'.$feed.'?v='.$this->config['api_version'];
+            break;
 
         case 'single_video';
             $id =  $this->__cleanYoutubeId($key);
@@ -67,18 +63,18 @@ class Youtube extends DataSource{
             }
             $url = $this->config['api_url'].$this->video_feed;
             $url.= $key.'?v='.$this->config['api_version'];
-        break;
+            break;
 
         case 'category';
             $url = $this->config['api_url'].$this->video_feed;
-            $url.= '?category='.$key.'&v='.$this->config['api_version'];
-        break;
+            $url.= '?category='.$key.'?v='.$this->config['api_version'];
+            break;
 
         case 'search':
             $url = $this->config['api_url'].$this->video_feed;
             $url.= '?q=' . urlencode($key) . '&v='.$this->config['api_version'];
-            if(empty($options['category'])){
-              $url.= '&category=' . $options['category'];
+            if (!empty($options['category'])) {
+                $url.= '&category=' . $options['category'];
             }
             break;
 
@@ -142,16 +138,18 @@ class Youtube extends DataSource{
      * array if they exist
      */
     public function find($term, $cat = null){
-      $url = $this->__buildUrl(
-        $term,
-        'search',
-        array(
-          'category'=> $this->__availableCategory($cat) ? $cat : null
-        )
-      );
-      $video_feed = $this->Xml->toArray($this->Xml->build($url));
-      if(!$video_feed) return false;
-      return $video_feed;
+        $url = $this->__buildUrl(
+            $term,
+            'search',
+            array(
+                'category'=> $this->__availableCategory($cat) ? $cat : null
+            )
+        );
+        $video_feed = $this->Xml->toArray($this->Xml->build($url));
+        if (!$video_feed) {
+            return false;
+        }
+        return $video_feed;
     }
 
     /**
