@@ -40,7 +40,7 @@ class Youtube extends DataSource{
         $this->Xml = new Xml();
     }
 
-/**
+    /**
      * build the url 
      *
      * @access private
@@ -185,6 +185,12 @@ class Youtube extends DataSource{
         return $video_feed;
     }
 
+    /**
+     * check if a category is available on the yotube standard feed
+     *
+     * @return bool
+     * @param string $cat category to be checked
+    **/
     private function __availableCategory($cat) {
         $existing_categories = array(
             'Comedy', 'People', 'Entertainment', 'People', 'Music', 'Howto',
