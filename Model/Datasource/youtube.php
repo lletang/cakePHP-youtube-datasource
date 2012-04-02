@@ -163,7 +163,7 @@ class Youtube extends DataSource{
      * @param $options array - containing the feed_id type
      * the feed_id type available are:
      * 'top_rated', 'top_favorites','most_viewed', 'most_shared', 
-     * 'most_populare', 'most_recent', 'most_discussed', 'most_responded', 
+     * 'most_popular', 'most_recent', 'most_discussed', 'most_responded', 
      * 'recently_featured', 'on_the_web'
      *
      * @return mixed - return false if the videos do not exists, return the 
@@ -231,7 +231,7 @@ class Youtube extends DataSource{
     private function __availableFeed($feed_id) {
         $existing_feeds = array(
             'top_rated', 'top_favorites','most_viewed', 'most_shared', 
-            'most_populare', 'most_recent', 'most_discussed', 'most_responded', 
+            'most_popular', 'most_recent', 'most_discussed', 'most_responded', 
             'recently_featured', 'on_the_web'
         );
         if (isset($feed_id) && in_array($feed_id, $existing_feeds)) {
