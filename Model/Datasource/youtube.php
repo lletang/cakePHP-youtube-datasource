@@ -74,6 +74,14 @@ class Youtube extends DataSource{
             $url.= '?category='.$key.'&v='.$this->config['api_version'];
         break;
 
+        case 'search':
+            $url = $this->config['api_url'].$this->video_feed;
+            $url.= '?q=' . urlencode($key) . '&v='.$this->config['api_version'];
+            if(empty($options['category'])){
+              $url.= '&category=' . $options['category'];
+            }
+            break;
+
         default:
             $url = false;
         }
@@ -122,6 +130,28 @@ class Youtube extends DataSource{
 			return false;
 		}
 		return $video_feed;
+    }
+
+    /**
+     * Open search with category capability
+     *
+     * @access public
+     * @param string $term - The term to look for
+     * @param string $cat - Category to be included
+     * @return mixed - return false if the videos do not exists, return a videos
+     * array if they exist
+     */
+    public function find($term, $cat = null){
+      $url = $this->__buildUrl(
+        $term,
+        'search',
+        array(
+          'category'=> $this->__availableCategory($cat) ? $cat : null
+        )
+      );
+      $video_feed = $this->Xml->toArray($this->Xml->build($url));
+      if(!$video_feed) return false;
+      return $video_feed;
     }
 
     /**
