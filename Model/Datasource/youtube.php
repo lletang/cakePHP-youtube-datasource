@@ -21,7 +21,6 @@
  *   );
  */
 
-App::uses('Xml', 'Utility');
 App::uses('HttpSocket', 'Network/Http');
 
 /**
@@ -40,7 +39,6 @@ class Youtube extends DataSource{
 	
     public function __construct($config) {
         parent::__construct($config);
-        $this->Xml = new Xml();
     }
 
     /**
