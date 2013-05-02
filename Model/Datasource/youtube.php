@@ -62,7 +62,7 @@ class Youtube extends DataSource{
                 return false;
             }
             $url = $this->config['api_url'].$this->video_feed;
-            $url.= $key.'?v='.$this->config['api_version'];
+            $url.= $id.'?v='.$this->config['api_version'];
             break;
 
         case 'category';
