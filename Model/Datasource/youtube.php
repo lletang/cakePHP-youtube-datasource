@@ -21,7 +21,7 @@
  *   );
  */
 
-App::uses('Xml', 'Utility');
+App::uses('HttpSocket', 'Network/Http');
 
 /**
  * Youtube Datasource
@@ -34,10 +34,11 @@ class Youtube extends DataSource{
     var $video_feed = 'videos/';
     var $nation_feed = 'nations/';
     var $standard_feed = 'standardfeeds/';
-
+    // Bug: https://cakephp.lighthouseapp.com/projects/42648/tickets/3681-HttpSocket-doesnt-look-at-SSL-certificate-CN-alternatives
+	var $default_socket_settings = array('ssl_verify_host'=>false);
+	
     public function __construct($config) {
         parent::__construct($config);
-        $this->Xml = new Xml();
     }
 
     /**
@@ -53,7 +54,7 @@ class Youtube extends DataSource{
         case 'nation';
             $feed = isset($options['feed_id']) ? $options['feed_id'] : 'top_rated';
             $url = $this->config['api_url'].$this->standard_feed;
-            $url.= $key.'/'.$feed.'?v='.$this->config['api_version'];
+            $url.= $key.'/'.$feed.'?v='.$this->config['api_version']."&alt=json";
             break;
 
         case 'single_video';
@@ -62,17 +63,17 @@ class Youtube extends DataSource{
                 return false;
             }
             $url = $this->config['api_url'].$this->video_feed;
-            $url.= $key.'?v='.$this->config['api_version'];
+            $url.= $id.'?v='.$this->config['api_version']."&alt=json";
             break;
 
         case 'category';
             $url = $this->config['api_url'].$this->video_feed;
-            $url.= '?category='.$key.'?v='.$this->config['api_version'];
+            $url.= '?category='.$key.'?v='.$this->config['api_version']."&alt=json";
             break;
 
         case 'search':
             $url = $this->config['api_url'].$this->video_feed;
-            $url.= '?q=' . urlencode($key) . '&v='.$this->config['api_version'];
+            $url.= '?q=' . urlencode($key) . '&v='.$this->config['api_version']."&alt=json";
             if (!empty($options['category'])) {
                 $url.= '&category=' . $options['category'];
             }
@@ -97,7 +98,8 @@ class Youtube extends DataSource{
         if (!$video_url) {
             return false;
         }
-        $video_feed = $this->Xml->toArray($this->Xml->build($video_url));
+		$HttpSocket = new HttpSocket($this->default_socket_settings);
+        $video_feed = json_decode($HttpSocket->get($video_url),true);
         if (!$video_feed) {
             return false;
         }
@@ -120,8 +122,10 @@ class Youtube extends DataSource{
         $cat_video = $this->__buildUrl($cat, 'category');
         if (!$cat_video) {
             return false;
-        }
-        $video_feed = $this->Xml->toArray($this->Xml->build($cat_video));
+        }		
+		$HttpSocket = new HttpSocket($this->default_socket_settings);
+        $video_feed = json_decode($HttpSocket->get($cat_video),true);
+
         if (!$video_feed) {
             return false;
         }
@@ -145,7 +149,10 @@ class Youtube extends DataSource{
                 'category'=> $this->__availableCategory($cat) ? $cat : null
             )
         );
-        $video_feed = $this->Xml->toArray($this->Xml->build($url));
+		$HttpSocket = new HttpSocket($this->default_socket_settings);
+        $video_feed = json_decode($HttpSocket->get($url),true);
+
+		
         if (!$video_feed) {
             return false;
         }
@@ -178,7 +185,9 @@ class Youtube extends DataSource{
         if (!$nat_video) {
             return false;
         }
-        $video_feed = $this->Xml->toArray($this->Xml->build($nat_video));
+		$HttpSocket = new HttpSocket($this->default_socket_settings);
+        $video_feed = json_decode($HttpSocket->get($nat_video),true);
+
         if (!$video_feed) {
             return false;
         }
@@ -256,14 +265,14 @@ class Youtube extends DataSource{
             return false;
         }
         $video_feed = array(
-            'title' => $video_feed['entry']['title'],
-            'id' => $video_feed['entry']['media:group']['yt:videoid'],
-            'author' => $video_feed['entry'] ['author']['name'],
-            'default_thumb' => $video_feed['entry']['media:group']['media:thumbnail'][0]['@url'],
-            'hd_thumb' => $video_feed['entry']['media:group']['media:thumbnail'][1]['@url'],
-            'start_thumb' => $video_feed['entry']['media:group']['media:thumbnail'][2]['@url'],
-            'middle_thumb' => $video_feed['entry']['media:group']['media:thumbnail'][3]['@url'],
-            'end_thumb' => $video_feed['entry']['media:group']['media:thumbnail'][4]['@url'],
+            'title' => $video_feed['entry']['title']['$t'],
+            'id' => $video_feed['entry']['media$group']['yt$videoid']['$t'],
+            'author' => $video_feed['entry']['author'][0]['name']['$t'],
+            'default_thumb' => $video_feed['entry']['media$group']['media$thumbnail'][0]['url'],
+            'hd_thumb' => $video_feed['entry']['media$group']['media$thumbnail'][1]['url'],
+            'start_thumb' => $video_feed['entry']['media$group']['media$thumbnail'][2]['url'],
+            'middle_thumb' => $video_feed['entry']['media$group']['media$thumbnail'][3]['url'],
+            'end_thumb' => $video_feed['entry']['media$group']['media$thumbnail'][4]['url'],
         );
         return $video_feed;
     }
