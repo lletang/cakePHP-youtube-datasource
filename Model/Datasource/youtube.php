@@ -264,17 +264,31 @@ class Youtube extends DataSource{
         if (empty($video_feed)) {
             return false;
         }
+		$thumbsD=array();
+		$cnt=count($video_feed['entry']['media$group']['media$thumbnail']);
+		foreach( $video_feed['entry']['media$group']['media$thumbnail'] as $key => $thumb) {
+			if ($key >= $cnt-3) {
+				continue;
+			}
+			$thumbsD[]=$thumb['url'];
+		}
+		
+		$thumbsR=array(
+			$video_feed['entry']['media$group']['media$thumbnail'][$cnt-3]['url'],
+			$video_feed['entry']['media$group']['media$thumbnail'][$cnt-2]['url'],
+			$video_feed['entry']['media$group']['media$thumbnail'][$cnt-1]['url'],
+			);
         $video_feed = array(
+	    'image' => $thumbsD[0],
             'title' => $video_feed['entry']['title']['$t'],
             'id' => $video_feed['entry']['media$group']['yt$videoid']['$t'],
             'author' => $video_feed['entry']['author'][0]['name']['$t'],
-            'default_thumb' => $video_feed['entry']['media$group']['media$thumbnail'][0]['url'],
-            'hd_thumb' => $video_feed['entry']['media$group']['media$thumbnail'][1]['url'],
-            'start_thumb' => $video_feed['entry']['media$group']['media$thumbnail'][2]['url'],
-            'middle_thumb' => $video_feed['entry']['media$group']['media$thumbnail'][3]['url'],
-            'end_thumb' => $video_feed['entry']['media$group']['media$thumbnail'][4]['url'],
+            'thumbs' => array('default' => $thumbsD, 'video' => $thumbsR),			
+	    'description' => $video_feed['entry']['media$group']['media$description']['$t'],
+	    'player' => $video_feed['entry']['content']['src'],
         );
         return $video_feed;
+
     }
 
     /**
